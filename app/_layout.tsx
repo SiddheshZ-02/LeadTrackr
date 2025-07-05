@@ -1,29 +1,59 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { Provider } from "react-redux";
+import React, { useEffect } from "react";
+import { Stack } from "expo-router";
+import store from "@/Store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { loadToken } from "@/Store/authSlice";
+import { RootState, AppDispatch } from "@/Store/store";
+import { ToastAndroid } from "react-native";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+function AppInitializer({ children }: { children: React.ReactNode }) {
+  const dispatch = useDispatch<AppDispatch>();
+  const { token, user } = useSelector((state: RootState) => state.auth);
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+  useEffect(() => {
+    dispatch(loadToken());
+  }, [dispatch]);
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (token && !user) {
+        try {
+          const response = await fetch("https://api.escuelajs.co/api/v1/auth/profile", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const userData = await response.json();
+          if (response.ok) {
+            dispatch({ type: "auth/loginUser/fulfilled", payload: { access_token: token, user: userData } });
+          }
+        } catch (e) {
+          ToastAndroid.showWithGravity(
+            "Failed to load user profile. Please login again.",
+            ToastAndroid.LONG,
+            ToastAndroid.BOTTOM
+          );
+        }
+      }
+    };
+    fetchProfile();
+  }, [token, user, dispatch]);
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+  return <>{children}</>;
 }
+
+const _layout = () => {
+  return (
+    <Provider store={store}>
+      <AppInitializer>
+        <Stack>
+          <Stack.Screen name='index' options={{headerShown:false}}/>
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} 
+          />
+          <Stack.Screen name="(protected)" options={{headerShown:false}}/>
+        </Stack>
+      </AppInitializer>
+    </Provider>
+  );
+};
+
+export default _layout;

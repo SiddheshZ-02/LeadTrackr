@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "leadtrackr",
+    "name": "LeadTrackr",
     "slug": "leadtrackr",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/leadtrackr.png",
     "scheme": "leadtrackr",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,30 +13,38 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/leadtrackr1.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.siddhesh14.leadtrackr"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/leadtrackr.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/leadtrackr.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "814db06a-b9aa-4c67-bbf8-943a364d4073"
+      }
     }
   }
 }
