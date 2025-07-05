@@ -6,7 +6,7 @@
 
 
 ### 📱 Download APK
-[Click here to download APK] (https://drive.google.com/file/d/1RaR3zRhY5uwfvCywgXsD2AnLm5V4y7NG/view?usp=drivesdk)
+[Click here to download APK](https://drive.google.com/file/d/1RaR3zRhY5uwfvCywgXsD2AnLm5V4y7NG/view?usp=drivesdk)
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
